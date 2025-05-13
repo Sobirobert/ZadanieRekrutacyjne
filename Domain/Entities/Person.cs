@@ -1,9 +1,11 @@
-﻿namespace ZadanieRekrutacyjne.Models;
+﻿using Domain.Common;
 
-public record Person
+namespace ZadanieRekrutacyjne.Models;
+
+public abstract record Person : Adress
 {
-    public record Simple(Guid Id, string Name, string Surname) : Person;
-    public record WithPesel(Guid Id, string Name, string Surname, string Pesel) : Person;
+    protected Person(string Street, string NumberOfHouse, string ZipCode, string Citi) : base(Street, NumberOfHouse, ZipCode, Citi)
+    {
+    }
 }
-
 

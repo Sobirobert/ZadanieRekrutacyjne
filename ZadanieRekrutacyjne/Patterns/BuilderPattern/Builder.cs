@@ -1,6 +1,7 @@
-﻿using ZadanieRekrutacyjne.Models;
+﻿using Domain.Entities;
+using ZadanieRekrutacyjne.Models;
 
-namespace ZadanieRekrutacyjne.Patterns;
+namespace ZadanieRekrutacyjne.Patterns.Builder;
 
 public class Builder
 {
@@ -12,7 +13,7 @@ public class Builder
     }
     public Person Build()
     {
-        var person = new Person.Simple(id, "John", "Doo");
+        var person = new Simple(id, "John", "Doo");
         return person;
     }
 }
