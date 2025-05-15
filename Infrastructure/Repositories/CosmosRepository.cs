@@ -42,7 +42,6 @@ public class CosmosRepository( string connString, string dbase, string container
 
     public async Task<IQueryable<T>> GetAll<T>() where T : class, IRepositoryObject
     {
-        // Dodajemy filtr po typie
         string typeName = typeof(T).Name;
         string query = $"SELECT * FROM c WHERE c.type = '{typeName}'";
 
@@ -84,13 +83,13 @@ public class CosmosRepository( string connString, string dbase, string container
         throw new ArgumentNullException(nameof(input));
     }
 
-    public async Task<T> Update<T>(Guid id, T value) where T : class, IRepositoryObject
+    public async Task Update<T>(T value) where T : class, IRepositoryObject
     {
+        
         if (value != null)
         {
-            bool equalsObject = (value.Id = id) ? true : false;
-            var existingItem = await Get<T>(id);
-            if (existingItem != null || equalsObject)
+            var person = Get<T>(value.Id);
+            if (person == null)
             {
                 await Save(value);
                 return value;

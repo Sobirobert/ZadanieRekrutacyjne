@@ -28,17 +28,16 @@ public class BaseGenericService(IRepository repository) : IService
         if (checkObject == null)
         {
             await _repository.Save(newObject);
-            return checkObject;
         }
         throw new Exception("This obj exist");
     }
 
-    public async Task UpdateObject<T>(T xupdateObject) where T : class, IRepositoryObject
+    public async Task UpdateObject<T>(T updateObject) where T : class, IRepositoryObject
     {
         var checkObject = await _repository.Get<T>(updateObject.Id);
         if (checkObject != null)
         {
-            await _repository.Update(checkObject);
+            await _repository.Update<T>(checkObject);
         }
         throw new Exception("This obj doesn't exist");
     }

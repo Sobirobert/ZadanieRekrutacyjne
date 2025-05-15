@@ -15,6 +15,8 @@ public class SimplePersonDto(Guid Id, string Name, string Surname, string Street
     public string NumberOfHouse { get; } = NumberOfHouse;
     public string ZipCode { get; } = ZipCode;
     public string City { get; } = City;
+    Guid IRepositoryObject.Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Simple, SimplePersonDto>();

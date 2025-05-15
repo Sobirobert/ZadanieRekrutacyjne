@@ -1,5 +1,7 @@
 ﻿using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace ZadanieRekrutacyjne.Installers;
 
@@ -26,12 +28,12 @@ public class MvcInstaller : IInstaller
         //services.AddScoped<ErrorHandlingMiddelware>();
         services.AddRazorPages();
         //services.AddMediatR(typeof(MvcInstaller));
-        //services.AddApiVersioning(x =>
-        //{
-        //    x.DefaultApiVersion = new ApiVersion(1, 0);
-        //    x.AssumeDefaultVersionWhenUnspecified = true;
-        //    x.ReportApiVersions = true;
-        //    x.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
-        //});
+        services.AddApiVersioning(x =>
+        {
+            x.DefaultApiVersion = new ApiVersion(1, 0);
+            x.AssumeDefaultVersionWhenUnspecified = true;
+            x.ReportApiVersions = true;
+            x.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
+        });
     }
 }

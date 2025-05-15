@@ -5,8 +5,11 @@ namespace Domain.Entities;
 
 public abstract record Person : Adress, IRepositoryObject
 {
-    protected Person(string Street, string NumberOfHouse, string ZipCode, string Citi) : base(Street, NumberOfHouse, ZipCode, Citi)
+    protected Person( string Name, string Surname, string Street, string NumberOfHouse, string ZipCode, string Citi) : base(Street, NumberOfHouse, ZipCode, Citi)
     {
+      
     }
+
+    public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }
 

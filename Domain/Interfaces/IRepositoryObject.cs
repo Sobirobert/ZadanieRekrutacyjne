@@ -2,4 +2,5 @@
 
 public interface IRepositoryObject
 {
+    Guid Id { get; set; }
 }

@@ -6,9 +6,10 @@ using ZadanieRekrutacyjne.Wrappers;
 
 namespace ZadanieRekrutacyjne.Controllers.V1;
 
+[ApiVersion("1.0")]
 [ApiController]
 [Route("api/[controller]")]
-public class BasicController(IPersonWithPeselPerson service)
+public class BasicController(IPersonWithPeselPerson service) : ControllerBase
 {
     private readonly IPersonWithPeselPerson _service = service;
 
@@ -26,11 +27,10 @@ public class BasicController(IPersonWithPeselPerson service)
     }
 
     [HttpGet]
-
     [SwaggerOperation(Summary = "Retrieves all person with pesel")]
     public async Task<IActionResult> GetAll()
     {
-        var allPersons = _service.GetAllPersonsWithPesel();
+        var allPersons = await _service.GetAllPersonsWithPesel();
         if (allPersons == null)
         {
             return BadRequest();

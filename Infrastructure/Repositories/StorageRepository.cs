@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class StorageRepository(string connString, string container, DbContext DbContext, DbSet<T> DbSet) : IRepository
+public class StorageRepository(string connString, string container, DbContext dbContext) : IRepository
 {
-    private readonly DbContext dbContext = DbContext;
-    private readonly DbSet<T> dbSet = DbContext.Set<T>();
+    private readonly DbContext _dbContext = dbContext;
+    private readonly DbSet<T> _dbSet = dbContext.Set<T>();
 
     public async Task<T> Get<T>(Guid id) where T : class, IRepositoryObject
     {
-        var objectGet = await dbSet.FindAsync(id);
+        var objectGet = await _dbSet.FindAsync(id);
         if (objectGet != null)
         {
             return objectGet;
@@ -21,31 +21,40 @@ public class StorageRepository(string connString, string container, DbContext Db
 
     public async Task<IQueryable<T>> GetAll<T>() where T : class, IRepositoryObject
     {
-        return await dbSet.ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
     public async Task Save<T>(T input) where T : class, IRepositoryObject
     {
         if (input != null)
         {
-            await dbSet.AddAsync(input);
-            await dbContext.SaveChangesAsync(); 
+            await _dbSet.AddAsync(input);
+            await _dbContext.SaveChangesAsync(); 
         }
         throw new Exception("Empty object!");
     }
 
-    public async Task<T> Update<T>(Guid id, T value) where T : class, IRepositoryObject
+    public async Task Update<T>( T value) where T : class, IRepositoryObject
     {
-        throw new NotImplementedException();
+        if (value != null)
+        {
+            var person = Get<T>(value.Id);
+            if (person == null)
+            {
+                await Save(value);
+            }
+            throw new KeyNotFoundException($"Item with id {id} not found");
+        }
+        throw new ArgumentNullException(nameof(value));
     }
 
     public async Task Delete<T>(Guid id) where T : class, IRepositoryObject
     {
-        var objectGet = await dbSet.FindAsync(id);
+        var objectGet = await _dbSet.FindAsync(id);
         if (objectGet != null)
         {
-            await dbSet.Remove(objectGet);
-            await dbContext.SaveChangesAsync();
+            await _dbSet.Remove(objectGet);
+            await _dbContext.SaveChangesAsync();
         }
         throw new Exception("There isn't object with that id!");
     }
