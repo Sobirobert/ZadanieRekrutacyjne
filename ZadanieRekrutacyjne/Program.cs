@@ -1,4 +1,6 @@
-using ZadanieRekrutacyjne.Models;
+using Domain.Entities;
+using Microsoft.Extensions.Logging;
+using ZadanieRekrutacyjne.Installers;
 using ZadanieRekrutacyjne.Patterns.Configuratin;
 using ZadanieRekrutacyjne.Patterns.FactoryPattern;
 
@@ -8,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.InstallServicesInAssembly(builder.Configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton(new StorageConfig("",""));
 
@@ -22,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1");
+        c.EnableAnnotations();
+
     });
 }
 
@@ -36,5 +41,16 @@ app.MapGet("/{id}",async (Guid id) =>
 //app.UseAuthorization();
 
 app.MapControllers();
+try
+{
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+}
+finally
+{
+    throw new Exception("Something is wrong with application. Please check Program files.");
+}
 
-app.Run();

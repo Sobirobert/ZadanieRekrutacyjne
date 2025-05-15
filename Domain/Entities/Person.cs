@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using Domain.Interfaces;
 
-namespace ZadanieRekrutacyjne.Models;
+namespace Domain.Entities;
 
-public abstract record Person : Adress
+public abstract record Person : Adress, IRepositoryObject
 {
     protected Person(string Street, string NumberOfHouse, string ZipCode, string Citi) : base(Street, NumberOfHouse, ZipCode, Citi)
     {

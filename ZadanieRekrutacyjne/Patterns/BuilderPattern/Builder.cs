@@ -11,7 +11,7 @@ public class Builder
         this.id = id;
         return this;
     }
-    public Person Build()
+    public Models.Person Build()
     {
         var person = new Simple(id, "John", "Doo");
         return person;

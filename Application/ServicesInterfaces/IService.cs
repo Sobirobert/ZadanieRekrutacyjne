@@ -1,29 +1,12 @@
-﻿namespace Application.ServicesInterfaces;
+﻿using Domain.Interfaces;
+
+namespace Application.ServicesInterfaces;
 
 public interface IService
 {
-    Task<T> Get<T>(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<T> GetAll<T>()
-    {
-        throw new NotImplementedException();
-    }
-
-    Task Save<T>(T inpust)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<T> Update<T>(Guid id, T value)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task Delete<T>(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    Task<T> GetObjectById<T>(Guid id) where T : class, IRepositoryObject;
+    Task<IEnumerable<T>> GetAllObjects<T>() where T : class, IRepositoryObject;
+    Task AddService<T>(T newObject) where T : class, IRepositoryObject;
+    Task UpdateObject<T>(T updateObject) where T : class, IRepositoryObject;
+    Task RemoveService<T>(Guid id) where T : class, IRepositoryObject;
 }

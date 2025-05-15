@@ -1,56 +1,61 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using Application.Dto;
+using Application.ServicesInterfaces;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using ZadanieRekrutacyjne.Wrappers;
 
 namespace ZadanieRekrutacyjne.Controllers.V1;
 
 [ApiController]
-[Route("[controller]")]
-public class BasicController
+[Route("api/[controller]")]
+public class BasicController(IPersonWithPeselPerson service)
 {
-    private readonly IService _contextAccessor;
+    private readonly IPersonWithPeselPerson _service = service;
+
     [HttpGet]
-    public IActionResult Get(Guid Id)
+    [SwaggerOperation(Summary = "Retrieves person by id")]
+    public async Task <IActionResult> Get(Guid id)
     {
-        var product = await _productService.GetProductById(id);
-        if (product == null)
+        var person = await _service.GetPersonWithPeselById(id);
+        if (person == null)
         {
             return NotFound(id);
         }
 
-        return Ok(new Response<ProductDto>(product));
+        return Ok(new Response<PersonWithPeselDto>(person));
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+
+    [SwaggerOperation(Summary = "Retrieves all person with pesel")]
+    public async Task<IActionResult> GetAll()
     {
-        var allBojects = _contextAccessor.GetAll();
-        return Ok(PaginationHelper.CreatePageResponse(products, validPaginationFilter, totalRecords));
+        var allPersons = _service.GetAllPersonsWithPesel();
+        if (allPersons == null)
+        {
+            return BadRequest();
+        }
+        return Ok(new Response<IEnumerable<PersonWithPeselDto>>(allPersons));
     }
 
     [HttpPost]
-    public IActionResult AddNewPerson()
+    public async Task<IActionResult> AddNewPerson(CreatePersonWithPeselDto newPerson)
     {
-        var product = await _productService.AddNewProduct(newProduct);
-        return Created($"api/product/{product.Id}", new Response<ProductDto>(product));
+        await _service.AddPersonWithPesel(newPerson);
+        return Created($"api/product/{newPerson.Id}", new Response<CreatePersonWithPeselDto>(newPerson));
     }
 
     [HttpPut]
-    public IActionResult Update()
+    public async Task<IActionResult> Update(PersonWithPeselDto updatePerson)
     {
-        await _productService.UpdateProduct(updateProduct);
+        await _service.UpdatePersonWithPesel(updatePerson);
         return NoContent();
     }
 
     [HttpDelete]
-    public IActionResult Delete()
+    public async Task<IActionResult> Delete(Guid id)
     {
-        var isAdmin = User.FindFirstValue(ClaimTypes.Role).Contains(UserRoles.Admin);
-        if (!isAdmin)
-        {
-            return BadRequest(new Response(false, "You do not own this product."));
-        }
-        await _productService.DeleteProduct(id);
+        await _service.RemovePersonWithPesel(id);
         return NoContent();
     }
 }
