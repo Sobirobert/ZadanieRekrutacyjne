@@ -31,9 +31,9 @@ public static class Decider
     public static SlotState Evolve(SlotState state, Event ev) =>
        (state, ev) switch
        {
-           (SlotState.Initial, Event.Booked evb) => Book(c.Start, c.End),
-           (SlotState.Free, Event.Booked evb) => Book(c.Start, c.End),
-           (SlotState.Booked, Event.Canceled) => Cancel(),
+           (SlotState.Initial, Event.Booked evb) => new SlotState.Booked(Guid.NewGuid(), evb.Start, evb.End),
+           (SlotState.Free ssf, Event.Booked evb) => new SlotState.Booked(evb.Id, evb.Start, evb.End),
+           (SlotState.Booked ssb, Event.Canceled) => new SlotState.Free(ssb.Id),
            _ => throw new NotImplementedException()
        };
 
