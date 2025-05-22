@@ -5,7 +5,7 @@ using Domain.Interfaces;
 
 namespace Application.Dto;
 
-public class CreateSimplePersonDto(string Name, string Surname, string Pesel, string Street, string NumberOfHouse, string ZipCode, string City)
+public class CreateSimplePersonDto(string Name, string Surname, string Street, string NumberOfHouse, string ZipCode, string City)
     : IMap, IRepositoryObject
 {
     public Guid Id { get; } = Guid.NewGuid();

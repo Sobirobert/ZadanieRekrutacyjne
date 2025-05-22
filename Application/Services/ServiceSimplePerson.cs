@@ -23,7 +23,7 @@ public class ServiceSimplePerson(IMapper mapper, IRepository repository) : BaseG
         throw new Exception("Wrong id, object with that id doesn't exist");
     }
 
-    public async Task<IEnumerable<SimplePersonDto>> GetAllSimplePersonPesel()
+    public async Task<IEnumerable<SimplePersonDto>> GetAllSimplePerson()
     {
         var allObjects = await GetAllObjects<SimplePersonDto>();
         if (allObjects != null)
@@ -35,7 +35,7 @@ public class ServiceSimplePerson(IMapper mapper, IRepository repository) : BaseG
         throw new Exception("Empty doesn't exist");
     }
 
-    public async Task AddSimplePersonPesel(CreateSimplePersonDto newObject)
+    public async Task AddSimplePerson(CreateSimplePersonDto newObject)
     {
         if (newObject != null)
         {

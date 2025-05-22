@@ -1,4 +1,4 @@
-﻿namespace ZadanieRekrutacyjne.Patterns;
+﻿namespace ZadanieRekrutacyjne.CQRS;
 
 public interface ICommandHandler<in T>
 {
