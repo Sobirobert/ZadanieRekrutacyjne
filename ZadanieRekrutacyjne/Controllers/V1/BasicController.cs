@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using ZadanieRekrutacyjne.Wrappers;
 
 namespace ZadanieRekrutacyjne.Controllers.V1;
+public record PersonRequest(Guid Id, string Name, string Surname, string? Pesel = null);
 
 [ApiVersion("1.0")]
 [ApiController]

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Repositories;
 
 public class StorageRepository(string connString, string container, DbContext dbContext) : IRepository
+   
+    
 {
     private readonly DbContext _dbContext = dbContext;
     private readonly DbSet<T> _dbSet = dbContext.Set<T>();
@@ -21,7 +23,7 @@ public class StorageRepository(string connString, string container, DbContext db
 
     public async Task<IQueryable<T>> GetAll<T>() where T : class, IRepositoryObject
     {
-        return await _dbSet.ToListAsync();
+        return _dbContext.Set<T>().AsQueryable();
     }
 
     public async Task Save<T>(T input) where T : class, IRepositoryObject
@@ -43,7 +45,7 @@ public class StorageRepository(string connString, string container, DbContext db
             {
                 await Save(value);
             }
-            throw new KeyNotFoundException($"Item with id {id} not found");
+            throw new KeyNotFoundException($"Item with id {person.Id} not found");
         }
         throw new ArgumentNullException(nameof(value));
     }

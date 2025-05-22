@@ -45,17 +45,17 @@ public class CosmosRepository( string connString, string dbase, string container
         string typeName = typeof(T).Name;
         string query = $"SELECT * FROM c WHERE c.type = '{typeName}'";
 
-        List<T> results = new List<T>();
+        IQueryable<T> results = Enumerable.Empty<T>().AsQueryable();
 
-        using (FeedIterator<T> resultSetIterator = _container.GetItemQueryIterator<T>(
-            queryDefinition: new QueryDefinition(query)))
-        {
-            while (resultSetIterator.HasMoreResults)
-            {
-                FeedResponse<T> response = await resultSetIterator.ReadNextAsync();
-                results.AddRange(response);
-            }
-        }
+        //using (FeedIterator<T> resultSetIterator = _container.GetItemQueryIterator<T>(
+        //    queryDefinition: new QueryDefinition(query)))
+        //{
+        //    while (resultSetIterator.HasMoreResults)
+        //    {
+        //        FeedResponse<T> response = await resultSetIterator.ReadNextAsync();
+        //        results.AddRange(response);
+        //    }
+        //}
 
         return results;
     }
@@ -86,17 +86,17 @@ public class CosmosRepository( string connString, string dbase, string container
     public async Task Update<T>(T value) where T : class, IRepositoryObject
     {
         
-        if (value != null)
-        {
-            var person = Get<T>(value.Id);
-            if (person == null)
-            {
-                await Save(value);
-                return value;
-            }
-            throw new KeyNotFoundException($"Item with id {id} not found");
-        }
-        throw new ArgumentNullException(nameof(value));
+        //if (value != null)
+        //{
+        //    var person = Get<T>(value.Id);
+        //    if (person == null)
+        //    {
+        //        await Save(value);
+        //        return value;
+        //    }
+        //    throw new KeyNotFoundException($"Item with id {value.Id} not found");
+        //}
+        //throw new ArgumentNullException(nameof(value));
     }
 
     public async Task Delete<T>(Guid id) where T : class, IRepositoryObject
